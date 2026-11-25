@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎁 Family Gift Exchange – Cabutan Undian</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --success-bg: #ecfdf5;
+      --success-text: #065f46;
+      --warn-bg: #fffbeb;
+      --warn-text: #92400e;
+      --danger-bg: #fef2f2;
+      --danger-text: #991b1b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 18px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: #fff;
+      padding: 22px;
+      border-radius: 16px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.18);
+    }
+
+    header h1 { font-size: 1.45rem; margin-bottom: 6px; }
+    header p { font-size: 0.92rem; opacity: 0.95; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 140px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.92rem;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 0.96rem;
+      background: #fff;
+      margin-bottom: 12px;
+    }
+
+    .btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .btn:hover:not(:disabled) { background: var(--primary-hover); }
+    .btn:disabled { background: #9ca3af; cursor: not-allowed; }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: var(--text);
+      border: 1px solid #d1d5db;
+    }
+
+    .btn-secondary:hover:not(:disabled) { background: #e5e7eb; }
+
+    .btn-danger {
+      background: #dc2626;
+      color: #fff;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .badge-done { background: var(--success-bg); color: var(--success-text); }
+    .badge-pending { background: var(--warn-bg); color: var(--warn-text); }
+
+    .result-box {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid #c7d2fe;
+      background: #eef2ff;
+    }
+
+    .result-box h3 { font-size: 1.05rem; margin-bottom: 8px; color: #312e81; }
+
+    .color-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .pill {
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid #c7d2fe;
+      font-weight: 600;
+      font-size: 0.86rem;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .status-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      background: #fafafa;
+    }
+
+    .notice {
+      font-size: 0.84rem;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .alert {
+      padding: 11px 14px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      font-size: 0.9rem;
+    }
+
+    .alert-warn { background: var(--warn-bg); color: var(--warn-text); }
+    .alert-danger { background: var(--danger-bg); color: var(--danger-text); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.88rem;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: #f3f4f6; font-weight: 700; }
+
+    .admin-row-flex {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .admin-row-flex input {
+      max-width: 240px;
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎁 Family Gift Exchange – Cabutan Undian</h1>
+      <p>Setiap peserta hanya boleh mengundi sekali sahaja. Keputusan orang lain dirahsiakan daripada peserta.</p>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-group="group1" onclick="switchGroup('group1')">Group 1 (Warna · 4)</button>
+      <button class="tab-btn" data-group="group2" onclick="switchGroup('group2')">Group 2 (Warna · 5)</button>
+      <button class="tab-btn" data-group="group3" onclick="switchGroup('group3')">Group 3 (Nama)</button>
+    </div>
+
+    <div class="card">
+      <h2 id="groupTitle" style="font-size:1.15rem; margin-bottom:12px;">Group 1</h2>
+
+      <label for="participantSelect">Pilih Nama Peserta</label>
+      <select id="participantSelect" onchange="renderParticipantPanel()"></select>
+
+      <div id="participantStatusBar" style="margin-bottom: 12px;"></div>
+
+      <button id="drawBtn" class="btn" onclick="handleDraw()">🎲 Cabut / Undi Sekarang</button>
+
+      <div id="myResultContainer"></div>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size:1rem; margin-bottom:8px;">Status Undian Peserta (Keputusan Dirahsiakan)</h3>
+      <div id="statusGrid" class="status-grid"></div>
+      <p class="notice">Peserta hanya nampak status Selesai / Belum serta keputusan milik sendiri sahaja.</p>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size:1rem; margin-bottom:8px;">🔐 Akses Admin (Lihat Keseluruhan Undi)</h3>
+      <p class="notice" style="margin-bottom:10px;">Masukkan kata laluan admin untuk melihat siapa memberi dan siapa menerima bagi kumpulan yang dipilih.</p>
+
+      <div class="admin-row-flex">
+        <input type="password" id="adminPasswordInput" placeholder="Masukkan password admin" />
+        <button class="btn" onclick="unlockAdmin()">Buka Panel Admin</button>
+        <button class="btn btn-secondary" id="lockAdminBtn" onclick="lockAdmin()" style="display:none;">Kunci Admin</button>
+      </div>
+
+      <div id="adminError" class="alert alert-danger" style="display:none; margin-top:10px;"></div>
+
+      <div id="adminPanel" style="display:none; margin-top:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+          <strong>Keseluruhan Padanan Undi (<span id="adminGroupLabel"></span>)</strong>
+          <button class="btn btn-danger" onclick="resetAllData()">🔄 Reset Semua Undian</button>
+        </div>
+        <div id="adminTableContainer" style="overflow-x:auto;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ADMIN_PASSWORD = "987321";
+    const STORAGE_KEY = "family_gift_exchange_2026_admin_v1";
+
+    const DATA = {
+      group1: {
+        title: "Group 1 – Gen X, Millennials & Boomers (4 Hadiah / Warna)",
+        type: "color",
+        giftsPerPerson: 4,
+        colors: [
+          "Hitam", "Putih", "Biru", "Merah", "Kuning", "Jingga",
+          "Hijau", "Coklat", "Merah Jambu", "Emas", "Ungu", "Kelabu"
+        ],
+        members: [
+          { id: "g1-1", name: "Mak Long", family: "Family Mak Long" },
+          { id: "g1-2", name: "Pak Ngah", family: "Individu: Pak Ngah" },
+          { id: "g1-3", name: "Ateh",     family: "Individu: Ateh" },
+          { id: "g1-4", name: "Inok",     family: "Family Inok" },
+          { id: "g1-5", name: "Pak Cu",   family: "Individu: Pak Cu" },
+          { id: "g1-6", name: "Kak Mas",  family: "Family Mak Long" },
+          { id: "g1-7", name: "Kak Ngah", family: "Family Mak Long" },
+          { id: "g1-8", name: "Linda",    family: "Family Inok" },
+          { id: "g1-9", name: "Ijad",     family: "Family Inok" },
+          { id: "g1-10", name: "Nana",    family: "Family Inok" },
+          { id: "g1-11", name: "Lin",     family: "Family Inok" },
+          { id: "g1-12", name: "Shira",   family: "Family Inok" }
+        ]
+      },
+      group2: {
+        title: "Group 2 – Gen Z & Gen Alpha (5 Hadiah / Warna)",
+        type: "color",
+        giftsPerPerson: 5,
+        colors: [
+          "Hitam", "Putih", "Biru", "Merah", "Kuning", "Jingga",
+          "Hijau", "Coklat", "Merah Jambu", "Emas", "Ungu", "Kelabu",
+          "Peach", "Krim", "Turqoise"
+        ],
+        members: [
+          { id: "g2-1",  name: "Haiqal",   family: "Family Haiqal" },
+          { id: "g2-2",  name: "Aleesya",  family: "Family Haiqal" },
+          { id: "g2-3",  name: "Aleeya",   family: "Family Haiqal" },
+          { id: "g2-4",  name: "Aira",     family: "Family Haiqal" },
+          { id: "g2-5",  name: "Iris",     family: "Family Iris" },
+          { id: "g2-6",  name: "Azwa",     family: "Family Haiqal" },
+          { id: "g2-7",  name: "Muaz",     family: "Family Iris" },
+          { id: "g2-8",  name: "Furqan",   family: "Family Furqan" },
+          { id: "g2-9",  name: "Aqeela",   family: "Family Haiqal" },
+          { id: "g2-10", name: "Zaid",     family: "Family Iris" },
+          { id: "g2-11", name: "Aileen",   family: "Family Haiqal" },
+          { id: "g2-12", name: "Farhah",   family: "Family Furqan" },
+          { id: "g2-13", name: "Sufyan",   family: "Individu: Sufyan" },
+          { id: "g2-14", name: "Adam",     family: "Family Haiqal" },
+          { id: "g2-15", name: "Cik Reen", family: "Individu: Cik Reen" }
+        ]
+      },
+      group3: {
+        title: "Group 3 – Gen Alpha & Gen Beta (Pertukaran Mengikut Nama)",
+        type: "name",
+        members: [
+          { id: "g3-1", name: "Ayyan",    family: "Family 2" },
+          { id: "g3-2", name: "Safiyyah", family: "Family 1" },
+          { id: "g3-3", name: "Daud",     family: "Family 3" },
+          { id: "g3-4", name: "Faatir",   family: "Family 4" },
+          { id: "g3-5", name: "Hannah",   family: "Family 1" },
+          { id: "g3-6", name: "Abot",     family: "Family 2" },
+          { id: "g3-7", name: "Fatima",   family: "Family 4" }
+        ]
+      }
+    };
+
+    function shuffle(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function generateColorAssignments(members, colors, giftsPerPerson) {
+      for (let attempt = 0; attempt < 30; attempt++) {
+        const shuffledColors = shuffle(colors);
+        const giversByColor = {};
+        const giveColorByMember = {};
+
+        members.forEach((m, idx) => {
+          const c = shuffledColors[idx];
+          giveColorByMember[m.id] = c;
+          giversByColor[c] = m;
+        });
+
+        const receivedByMember = {};
+        members.forEach(m => { receivedByMember[m.id] = new Set(); });
+
+        const slots = [];
+        for (const c of colors) {
+          for (let k = 0; k < giftsPerPerson; k++) slots.push(c);
+        }
+        const orderedSlots = shuffle(slots);
+
+        function backtrack(idx) {
+          if (idx === orderedSlots.length) return true;
+          const color = orderedSlots[idx];
+          const giver = giversByColor[color];
+
+          const candidates = shuffle(members)
+            .filter(receiver =>
+              receiver.id !== giver.id &&
+              receiver.family !== giver.family &&
+              receivedByMember[receiver.id].size < giftsPerPerson &&
+              !receivedByMember[receiver.id].has(color)
+            )
+            .sort((a, b) => receivedByMember[a.id].size - receivedByMember[b.id].size);
+
+          for (const receiver of candidates) {
+            receivedByMember[receiver.id].add(color);
+            if (backtrack(idx + 1)) return true;
+            receivedByMember[receiver.id].delete(color);
+          }
+          return false;
+        }
+
+        if (backtrack(0)) {
+          const map = {};
+          for (const m of members) {
+            map[m.id] = {
+              participantId: m.id,
+              name: m.name,
+              family: m.family,
+              type: "color",
+              giveColor: giveColorByMember[m.id],
+              giftsToPrepareCount: giftsPerPerson,
+              receiveColors: Array.from(receivedByMember[m.id]),
+              hasDrawn: false
+            };
+          }
+          return map;
+        }
+      }
+      throw new Error("Gagal menjana padanan warna yang sah.");
+    }
+
+    function generateNameAssignments(members) {
+      const usedReceivers = new Set();
+      const chosen = {};
+
+      function backtrack(idx) {
+        if (idx === members.length) return true;
+        const giver = members[idx];
+        const candidates = shuffle(members).filter(receiver =>
+          receiver.id !== giver.id &&
+          receiver.family !== giver.family &&
+          !usedReceivers.has(receiver.id)
+        );
+
+        for (const receiver of candidates) {
+          usedReceivers.add(receiver.id);
+          chosen[giver.id] = receiver;
+          if (backtrack(idx + 1)) return true;
+          usedReceivers.delete(receiver.id);
+          delete chosen[giver.id];
+        }
+        return false;
+      }
+
+      if (!backtrack(0)) throw new Error("Gagal menjana padanan nama yang sah.");
+
+      const map = {};
+      for (const giver of members) {
+        const receiver = chosen[giver.id];
+        map[giver.id] = {
+          participantId: giver.id,
+          name: giver.name,
+          family: giver.family,
+          type: "name",
+          receiverName: receiver.name,
+          hasDrawn: false
+        };
+      }
+      return map;
+    }
+
+    function createFreshState() {
+      return {
+        group1: generateColorAssignments(DATA.group1.members, DATA.group1.colors, DATA.group1.giftsPerPerson),
+        group2: generateColorAssignments(DATA.group2.members, DATA.group2.colors, DATA.group2.giftsPerPerson),
+        group3: generateNameAssignments(DATA.group3.members)
+      };
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      const fresh = createFreshState();
+      saveState(fresh);
+      return fresh;
+    }
+
+    function saveState(state) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    let appState = loadState();
+    let currentGroup = "group1";
+    let isAdminUnlocked = false;
+
+    function switchGroup(groupKey) {
+      currentGroup = groupKey;
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.group === groupKey);
+      });
+      document.getElementById("groupTitle").textContent = DATA[groupKey].title;
+
+      const select = document.getElementById("participantSelect");
+      select.innerHTML = DATA[groupKey].members
+        .map(m => `<option value="${m.id}">${m.name}</option>`)
+        .join("");
+
+      renderParticipantPanel();
+      renderStatusGrid();
+      if (isAdminUnlocked) renderAdminTable();
+    }
+
+    function renderParticipantPanel() {
+      const pid = document.getElementById("participantSelect").value;
+      const record = appState[currentGroup][pid];
+      const statusBar = document.getElementById("participantStatusBar");
+      const drawBtn = document.getElementById("drawBtn");
+      const resultBox = document.getElementById("myResultContainer");
+
+      if (!record) return;
+
+      if (record.hasDrawn) {
+        statusBar.innerHTML = `<span class="badge badge-done">✅ Sudah Mengundi (Sekali Sahaja · Dikunci)</span>`;
+        drawBtn.disabled = true;
+        drawBtn.textContent = "🔒 Undian Sudah Selesai";
+        resultBox.innerHTML = renderResultCard(record);
+      } else {
+        statusBar.innerHTML = `<span class="badge badge-pending">⏳ Belum Mengundi</span>`;
+        drawBtn.disabled = false;
+        drawBtn.textContent = "🎲 Cabut / Undi Sekarang";
+        resultBox.innerHTML = "";
+      }
+    }
+
+    function renderResultCard(record) {
+      if (record.type === "color") {
+        const pills = record.receiveColors
+          .map(c => `<span class="pill">${c}</span>`)
+          .join("");
+        return `
+          <div class="result-box">
+            <h3>Keputusan Cabutan Anda – ${record.name}</h3>
+            <p><strong>Warna Hadiah Untuk Diberi:</strong> <span class="pill">${record.giveColor}</span> (Sediakan <strong>${record.giftsToPrepareCount} hadiah</strong> warna ini)</p>
+            <p style="margin-top:10px;"><strong>Warna Hadiah Untuk Diterima (${record.receiveColors.length} warna berbeza):</strong></p>
+            <div class="color-pills">${pills}</div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="result-box">
+          <h3>Keputusan Cabutan Anda – ${record.name}</h3>
+          <p><strong>Penerima Hadiah Anda:</strong> <span class="pill">🎁 ${record.receiverName}</span></p>
+          <p class="notice">Sila rahsiakan penerima hadiah anda sehingga sesi pertukaran hadiah berlangsung.</p>
+        </div>
+      `;
+    }
+
+    function handleDraw() {
+      const pid = document.getElementById("participantSelect").value;
+      const record = appState[currentGroup][pid];
+      if (!record || record.hasDrawn) return;
+
+      record.hasDrawn = true;
+      saveState(appState);
+      renderParticipantPanel();
+      renderStatusGrid();
+      if (isAdminUnlocked) renderAdminTable();
+    }
+
+    function renderStatusGrid() {
+      const grid = document.getElementById("statusGrid");
+      const members = DATA[currentGroup].members;
+      grid.innerHTML = members.map(m => {
+        const rec = appState[currentGroup][m.id];
+        const badge = rec.hasDrawn
+          ? `<span class="badge badge-done">Selesai</span>`
+          : `<span class="badge badge-pending">Belum</span>`;
+        return `
+          <div class="status-item">
+            <span>${m.name}</span>
+            ${badge}
+          </div>
+        `;
+      }).join("");
+    }
+
+    function unlockAdmin() {
+      const input = document.getElementById("adminPasswordInput");
+      const errBox = document.getElementById("adminError");
+      if (input.value === ADMIN_PASSWORD) {
+        isAdminUnlocked = true;
+        errBox.style.display = "none";
+        document.getElementById("adminPanel").style.display = "block";
+        document.getElementById("lockAdminBtn").style.display = "inline-block";
+        renderAdminTable();
+      } else {
+        errBox.textContent = "Password admin salah.";
+        errBox.style.display = "block";
+      }
+    }
+
+    function lockAdmin() {
+      isAdminUnlocked = false;
+      document.getElementById("adminPasswordInput").value = "";
+      document.getElementById("adminPanel").style.display = "none";
+      document.getElementById("lockAdminBtn").style.display = "none";
+    }
+
+    function renderAdminTable() {
+      if (!isAdminUnlocked) return;
+      document.getElementById("adminGroupLabel").textContent = DATA[currentGroup].title;
+      const groupObj = appState[currentGroup];
+      const records = Object.values(groupObj);
+
+      if (DATA[currentGroup].type === "color") {
+        // Petakan siapa pemberi bagi setiap warna supaya admin nampak jelas siapa beri kepada siapa
+        const giverByColor = {};
+        records.forEach(r => { giverByColor[r.giveColor] = r.name; });
+
+        const rows = records.map(r => {
+          const receivedDetails = r.receiveColors
+            .map(c => `${c} <em>(dari ${giverByColor[c] || "-"})</em>`)
+            .join(", ");
+          const status = r.hasDrawn ? "✅ Selesai" : "⏳ Belum";
+          return `
+            <tr>
+              <td><strong>${r.name}</strong><br><span class="notice">${r.family}</span></td>
+              <td>${status}</td>
+              <td><strong>${r.giveColor}</strong> (${r.giftsToPrepareCount}x)</td>
+              <td>${receivedDetails}</td>
+            </tr>
+          `;
+        }).join("");
+
+        document.getElementById("adminTableContainer").innerHTML = `
+          <table>
+            <thead>
+              <tr>
+                <th>Peserta</th>
+                <th>Status</th>
+                <th>Warna Diberi</th>
+                <th>Warna Diterima &amp; Pemberi</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+      } else {
+        // Group 3: siapa beri kepada siapa + siapa akan terima daripada siapa
+        const giverOf = {};
+        records.forEach(r => { giverOf[r.receiverName] = r.name; });
+
+        const rows = records.map(r => {
+          const status = r.hasDrawn ? "✅ Selesai" : "⏳ Belum";
+          return `
+            <tr>
+              <td><strong>${r.name}</strong><br><span class="notice">${r.family}</span></td>
+              <td>${status}</td>
+              <td>🎁 <strong>${r.receiverName}</strong></td>
+              <td>${giverOf[r.name] || "-"}</td>
+            </tr>
+          `;
+        }).join("");
+
+        document.getElementById("adminTableContainer").innerHTML = `
+          <table>
+            <thead>
+              <tr>
+                <th>Peserta</th>
+                <th>Status</th>
+                <th>Memberi Kepada</th>
+                <th>Menerima Daripada</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+      }
+    }
+
+    function resetAllData() {
+      const ok = confirm("Adakah anda pasti mahu menjana semula cabutan dan mengosongkan semua status undian?");
+      if (!ok) return;
+      appState = createFreshState();
+      saveState(appState);
+      renderParticipantPanel();
+      renderStatusGrid();
+      if (isAdminUnlocked) renderAdminTable();
+    }
+
+    switchGroup("group1");
+  </script>
+</body>
+</html>
